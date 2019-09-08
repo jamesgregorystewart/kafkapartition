@@ -1,0 +1,33 @@
+    /*
+     * Init Actors.Producer
+     *   - Actors.Producer will have a message generator that generates messages at a given frequency determined by a property/arg passed in
+     *   - Actors.Producer's generated messages will be assigned a sequence number by a Sequencer
+     * */
+
+    /*
+     * Init Actors.Consumer
+     *   - Consumer will have a Reconciler that all messages will pass through to organize messages by sequence number
+     *   - Consumer will have a Persister that will write out all reconciled messages in order into a file
+     * */
+
+    /*
+     * Create start and stop scripts, respectively
+     * */
+
+
+Things to look into:
+- Putting project into a docker container
+- Pass in configurations via arguments
+- Creating a start script
+- Read Log4j manual -> http://logging.apache.org/log4j/1.2/manual.html
+- Use Connectors to
+
+
+Start zookeeper/kafka via scripts on application startup
+
+
+Current Project status:
+- topic with 3 partitions -> will experiment with varying numbers of partitions
+- one node kafka broker cluster -> will experiment with more nodes in cluster (largely a fault-tolerance precaution)
+- one producer
+- one consumer
