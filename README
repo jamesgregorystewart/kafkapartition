@@ -1,0 +1,10 @@
+We have a consumer that automatically consumes messages from the producer
+
+Next:
+    Producer needs to send the messages over the topic with more than one partition and consumer needs to quickly
+    be able to order them and write them out to a DB sequentially
+
+    What I want to do next is add 1 partition to the topic and then create a consumer factory that will create two
+    consumers to consume from the topic with 2 partitions and check the ordering of consumption. I also want to run
+    it with just the one consumer to see if only half of the entries are picked up since there are fewer consumers
+    than partitions.

@@ -35,6 +35,7 @@ public class KPConsumer implements Runnable {
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
             for (ConsumerRecord<String, String> record : records) {
+                System.out.println("Message Consumed: offset =" + record.offset() + ", key = " + record.key() + ", value = " + record.value());
                 logger.info("Message Consumed: offset = "+record.offset()+", key = "+record.key()+", value = "+record.value());
             }
         }
