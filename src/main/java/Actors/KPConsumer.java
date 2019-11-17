@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 
-public class KPConsumer implements Runnable {
+public class KPConsumer extends Thread {
 
     protected static final Logger logger = Logger.getLogger(KPConsumer.class);
 
@@ -41,8 +41,4 @@ public class KPConsumer implements Runnable {
         }
     }
 
-    public void runConsumer() {
-        Thread thread = new Thread(this::run);
-        thread.start();
-    }
 }

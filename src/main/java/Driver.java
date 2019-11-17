@@ -1,5 +1,6 @@
 import Actors.KPConsumer;
 import Actors.KPProducer;
+import Actors.MessageGenerator;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.CreateTopicsResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -28,14 +29,31 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        KPProducer producer = new KPProducer();
+        MessageGenerator generator = new MessageGenerator();
+        KPProducer producer = new KPProducer(generator);
+        KPProducer producer1 = new KPProducer(generator);
         KPConsumer consumer = new KPConsumer();
 
         try {
-            producer.runProducer();
-            consumer.runConsumer();
+            generator.start();
+            producer.start();
+            consumer.start();
+
+            /*
+            *  keep main thread asleep; checking if all the threads are alive every 5 seconds; and terminating them all if
+                any one of them dies
+            * */
+            while (generator.isAlive() && producer.isAlive() && producer1.isAlive() && consumer.isAlive()) {
+                Thread.sleep(5000);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // if any of them fail close them all out
+            generator.interrupt();
+            producer.interrupt();
+            producer1.interrupt();
+            consumer.interrupt();
         }
 
     }
@@ -57,17 +75,5 @@ public class Driver {
         } catch(Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static Producer<Long, String> createProducer() {
-        Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                BOOTSTRAP_SERVERS);
-        props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaExampleProducer");
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                LongSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class.getName());
-        return new KafkaProducer<>(props);
     }
 }

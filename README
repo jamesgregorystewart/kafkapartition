@@ -8,3 +8,14 @@ Next:
     consumers to consume from the topic with 2 partitions and check the ordering of consumption. I also want to run
     it with just the one consumer to see if only half of the entries are picked up since there are fewer consumers
     than partitions.
+
+    TODO:
+    - Start up producer and consumer in threads to accomplish the same thing.
+    - Then play with multiple threads.
+    - Make the producer and consumers use kafka message object with serialization
+    - Create my own serializer for the kafka message object?
+    - Move all hardcoded values into the properties folder
+    - Use some blocking data structure shared between the consumers to order the messages appropriately?
+    - Pick a DB to write everything to (whichever is easiest with the connector's library)
+    - Write everything to a DB (connector's library will be used for this)
+    - Analytics
