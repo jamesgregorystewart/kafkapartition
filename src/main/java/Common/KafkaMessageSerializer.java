@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class KafkaMessageSerializer implements org.apache.kafka.common.serialization.Serializer {
 
-//    public void configure(Map map, boolean b) {
-//
-//    }
+    public void configure(Map map, boolean b) {
+
+    }
 
     public byte[] serialize(String s, Object o) {
 
@@ -24,8 +24,8 @@ public class KafkaMessageSerializer implements org.apache.kafka.common.serializa
             return new byte[0];
         }
     }
-//
-//    public void close() {
-//
-//    }
+
+    public void close() {
+
+    }
 }

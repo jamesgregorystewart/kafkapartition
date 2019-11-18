@@ -1,10 +1,11 @@
 package Actors;
 
+import Common.KafkaMessageSerializer;
 import Models.KafkaMessage;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.log4j.Logger;
 
 import java.util.Properties;
@@ -13,13 +14,13 @@ public class KPProducer extends Thread {
 
     protected static final Logger logger = Logger.getLogger(KPProducer.class);
 
-    private Producer<String, String> producer;
+    private Producer<Long, KafkaMessage> producer;
     private MessageGenerator generator;
 
     public KPProducer(MessageGenerator generator) {
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
-        producer = new KafkaProducer<>(props, new StringSerializer(), new StringSerializer());
+        producer = new KafkaProducer<>(props, new LongSerializer(), new KafkaMessageSerializer());
         this.generator = generator;
     }
 
@@ -31,7 +32,7 @@ public class KPProducer extends Thread {
 
         for (int i = 0; i < 100; i++) {
             KafkaMessage message = generator.getMessage();
-            producer.send(new ProducerRecord<Long, KafkaMessage>("main-topic", message));
+            producer.send(new ProducerRecord<>("main-topic", message.getSequenceNum(), message));
         }
 
         producer.flush();
