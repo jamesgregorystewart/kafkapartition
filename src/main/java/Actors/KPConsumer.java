@@ -23,10 +23,14 @@ public class KPConsumer extends Thread {
     @Override
     public void run() {
         //TODO: move these properties to the resources and config file
+        //TODO: put in the default key.deserializer and value.deserializer
+        //TODO: the consumer isn't receiving records
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", "localhost:9092");
         props.setProperty("group.id", "main-group");
         props.setProperty("enable.auto.commit", "true");
+        props.setProperty("key.deserializer", "");
+        props.setProperty("value.deserializer", "");
         props.setProperty("auto.commit.interval.ms", "1000");
         KafkaConsumer<Long, KafkaMessage> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList("main-topic"));
@@ -34,7 +38,6 @@ public class KPConsumer extends Thread {
             ConsumerRecords<Long, KafkaMessage> records = consumer.poll(Duration.ofMillis(100));
             for (ConsumerRecord<Long, KafkaMessage> record : records) {
                 System.out.println("Message Consumed: offset =" + record.offset() + ", key = " + record.key() + ", value = " + record.value());
-                logger.info("Message Consumed: offset = "+record.offset()+", key = "+record.key()+", value = "+record.value());
             }
         }
     }

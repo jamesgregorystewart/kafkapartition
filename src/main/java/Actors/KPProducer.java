@@ -30,14 +30,18 @@ public class KPProducer extends Thread {
         // To start off each producer will iterate 100 times and fetch new messages from the queue
         // Will convert this to loop endlessly until some input is provided
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
+            try {
+                Thread.sleep(10);
+            } catch(InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
             KafkaMessage message = generator.getMessage();
+
             producer.send(new ProducerRecord<>("main-topic", message.getSequenceNum(), message));
         }
 
         producer.flush();
         producer.close();
     }
-
-
 }

@@ -37,6 +37,7 @@ public class Driver {
         try {
             generator.start();
             producer.start();
+            producer1.start();
             consumer.start();
 
             /*
