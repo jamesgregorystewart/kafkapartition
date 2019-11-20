@@ -19,6 +19,7 @@ public class KafkaMessageSerializer implements org.apache.kafka.common.serializa
             oos.writeObject(o);
             oos.close();
             byte[] b = baos.toByteArray();
+            baos.close();
             return b;
         } catch (IOException e) {
             return new byte[0];

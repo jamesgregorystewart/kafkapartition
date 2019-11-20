@@ -1,7 +1,6 @@
 package Actors;
 
 import Models.KafkaMessage;
-import kafka.Kafka;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -29,15 +28,15 @@ public class KPConsumer extends Thread {
         props.setProperty("bootstrap.servers", "localhost:9092");
         props.setProperty("group.id", "main-group");
         props.setProperty("enable.auto.commit", "true");
-        props.setProperty("key.deserializer", "");
-        props.setProperty("value.deserializer", "");
+        props.setProperty("key.deserializer", "org.apache.kafka.common.serialization.LongDeserializer");
+        props.setProperty("value.deserializer", "Common.KafkaMessageDeserializer");
         props.setProperty("auto.commit.interval.ms", "1000");
         KafkaConsumer<Long, KafkaMessage> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList("main-topic"));
         while (true) {
-            ConsumerRecords<Long, KafkaMessage> records = consumer.poll(Duration.ofMillis(100));
+            ConsumerRecords<Long, KafkaMessage> records = consumer.poll(Duration.ofMillis(2000));
             for (ConsumerRecord<Long, KafkaMessage> record : records) {
-                System.out.println("Message Consumed: offset =" + record.offset() + ", key = " + record.key() + ", value = " + record.value());
+                System.out.println("Message Consumed: offset =" + record.offset() + ", key = " + record.key() + ", value = " + record.value().getContent()[0]);
             }
         }
     }
